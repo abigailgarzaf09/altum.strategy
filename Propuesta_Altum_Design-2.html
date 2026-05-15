@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Altum Design — Propuesta de Presencia Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<style>
+/* ── BRAND TOKENS ───────────────────────────────────────── */
+:root {
+  --plum:  #1B0B2E;
+  --ember: #FF4D2E;
+  --bone:  #F2EAD3;
+  --paper: #FAF6EC;
+  --pitch: #0A0908;
+
+  --display: 'Bricolage Grotesque', sans-serif;
+  --italic:  'Instrument Serif', serif;
+  --body:    'Space Grotesk', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+}
+
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--body);
+  background: var(--pitch);
+  color: var(--bone);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ──────────────────────────────────────── */
+.cursor {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 12px; height: 12px;
+  background: var(--ember);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed; z-index: 9998; pointer-events: none;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--ember);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  transition: transform 0.18s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.6;
+}
+
+/* ── GRAIN OVERLAY ──────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay; opacity: 0.28;
+}
+
+/* ── SPARK SVG ──────────────────────────────────────────── */
+@keyframes spin-slow  { to { transform: rotate(360deg); } }
+@keyframes spin-rev   { to { transform: rotate(-360deg); } }
+.spark-spin  { animation: spin-slow 28s linear infinite; transform-origin: center; }
+.spark-spin2 { animation: spin-rev  40s linear infinite; transform-origin: center; }
+
+/* ── NAV ────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.4rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(11,6,20,0.72);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(242,234,211,0.08);
+}
+.nav-logo {
+  font-family: var(--display);
+  font-weight: 800; font-size: 1.1rem;
+  letter-spacing: -0.03em;
+  color: var(--bone);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.nav-logo .star { color: var(--ember); display: inline-block; animation: spin-slow 22s linear infinite; }
+.nav-links {
+  display: flex; gap: 2rem; list-style: none;
+  font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.nav-links a {
+  color: var(--bone); text-decoration: none; opacity: 0.55;
+  transition: opacity 0.2s, color 0.2s;
+}
+.nav-links a:hover { opacity: 1; color: var(--ember); }
+.nav-cta {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em;
+  text-transform: uppercase; background: var(--ember);
+  color: var(--plum); padding: 0.6rem 1.4rem;
+  border: none; cursor: none;
+  font-weight: 500; transition: transform 0.2s, box-shadow 0.2s;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,77,46,0.4); }
+
+/* ── SECTIONS ───────────────────────────────────────────── */
+section {
+  min-height: 100vh;
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden;
+  padding: 8rem 3rem 5rem;
+}
+
+/* ── SECTION LABEL ──────────────────────────────────────── */
+.section-label {
+  font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  opacity: 0.45; margin-bottom: 2.5rem;
+}
+
+/* ── DISPLAY TYPE ───────────────────────────────────────── */
+.display {
+  font-family: var(--display);
+  font-weight: 800; letter-spacing: -0.04em; line-height: 0.87;
+}
+.italic-xl {
+  font-family: var(--italic);
+  font-style: italic; font-weight: 400;
+  letter-spacing: -0.025em; line-height: 0.9;
+}
+.ember { color: var(--ember); }
+.bone  { color: var(--bone); }
+
+/* ── REVEAL ANIMATION ───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: 0.05s; }
+.reveal.d2 { transition-delay: 0.15s; }
+.reveal.d3 { transition-delay: 0.25s; }
+.reveal.d4 { transition-delay: 0.35s; }
+.reveal.d5 { transition-delay: 0.45s; }
+.reveal.d6 { transition-delay: 0.55s; }
+
+/* ════════════════════════════════════════════════════════
+   01 · HERO
+════════════════════════════════════════════════════════ */
+#hero {
+  background: var(--plum);
+  min-height: 100vh;
+  justify-content: flex-end;
+  padding-bottom: 5rem;
+}
+.hero-bg-spark {
+  position: absolute; right: -12vw; top: -15vw;
+  width: 65vw; height: 65vw;
+  pointer-events: none; opacity: 0.9; z-index: 0;
+}
+.hero-bg-spark2 {
+  position: absolute; left: -8vw; bottom: -12vw;
+  width: 36vw; height: 36vw;
+  pointer-events: none; opacity: 0.22; z-index: 0;
+}
+.hero-content { position: relative; z-index: 2; max-width: 1100px; }
+.hero-tag {
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ember); margin-bottom: 2rem; opacity: 0.85;
+}
+.hero-title { font-size: clamp(4rem, 9vw, 9rem); color: var(--bone); margin-bottom: 0.1em; }
+.hero-italic { font-size: clamp(4.5rem, 10vw, 10rem); color: var(--bone); }
+.hero-sub {
+  margin-top: 3rem;
+  display: flex; align-items: center; gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.hero-sub p {
+  font-family: var(--body); font-size: 1rem;
+  color: var(--bone); opacity: 0.55; max-width: 420px; line-height: 1.65;
+}
+.btn-primary {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em;
+  text-transform: uppercase; background: var(--ember); color: var(--plum);
+  padding: 1rem 2.2rem; border: none; cursor: none; white-space: nowrap;
+  font-weight: 500; text-decoration: none; display: inline-block;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(255,77,46,0.45); }
+.btn-outline {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em;
+  text-transform: uppercase; background: transparent; color: var(--bone);
+  padding: 1rem 2.2rem; border: 1px solid rgba(242,234,211,0.3); cursor: none;
+  white-space: nowrap; text-decoration: none; display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--bone); color: var(--bone); }
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; right: 3rem; z-index: 2;
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--bone); opacity: 0.3;
+  writing-mode: vertical-rl;
+  animation: fadeUp 2s ease 1s both;
+}
+.ember-bar {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 6px; background: var(--ember); z-index: 3;
+}
+
+/* ════════════════════════════════════════════════════════
+   02 · CONTEXTO
+════════════════════════════════════════════════════════ */
+#contexto { background: var(--paper); color: var(--plum); }
+.contexto-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  align-items: start; max-width: 1200px; margin-top: 3rem;
+}
+.contexto-card {
+  background: var(--plum); color: var(--bone);
+  padding: 2.5rem;
+  position: relative; overflow: hidden;
+}
+.contexto-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 5px; background: var(--ember);
+}
+.contexto-card p { font-size: 1.05rem; line-height: 1.7; opacity: 0.88; }
+.contexto-card .stat {
+  font-family: var(--display); font-weight: 800;
+  font-size: 3.5rem; color: var(--ember);
+  letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.5rem;
+}
+.check-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.check-list li {
+  display: flex; align-items: flex-start; gap: 1rem;
+  font-size: 1rem; line-height: 1.5; color: var(--plum);
+}
+.check-list li::before {
+  content: '';
+  flex-shrink: 0; margin-top: 0.25rem;
+  width: 20px; height: 20px;
+  background: var(--ember);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+#contexto .display { font-size: clamp(3rem, 6vw, 6rem); color: var(--plum); }
+#contexto .italic-xl { font-size: clamp(3.2rem, 6.5vw, 6.5rem); color: var(--plum); }
+
+/* ════════════════════════════════════════════════════════
+   03 · SERVICIOS
+════════════════════════════════════════════════════════ */
+#servicios { background: var(--plum); }
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1200px; margin-top: 3.5rem;
+}
+.service-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(242,234,211,0.1);
+  padding: 2.5rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.35s cubic-bezier(.22,1,.36,1), border-color 0.3s, box-shadow 0.35s;
+  cursor: none;
+}
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,77,46,0.4);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+}
+.service-card.featured {
+  background: var(--ember); border-color: var(--ember); color: var(--plum);
+}
+.service-card.featured:hover { box-shadow: 0 24px 60px rgba(255,77,46,0.35); }
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--ember);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s cubic-bezier(.22,1,.36,1);
+}
+.service-card.featured::before { background: var(--plum); }
+.service-card:hover::before { transform: scaleX(1); }
+.card-tag {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.22em;
+  text-transform: uppercase; opacity: 0.55; margin-bottom: 1rem;
+}
+.service-card.featured .card-tag { opacity: 0.7; }
+.card-icon {
+  width: 48px; height: 48px; margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-icon svg { width: 36px; height: 36px; }
+.card-name {
+  font-family: var(--display); font-weight: 800;
+  font-size: 1.6rem; letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 1.5rem; color: var(--bone);
+}
+.service-card.featured .card-name { color: var(--plum); }
+.card-divider {
+  width: 40px; height: 3px; background: var(--ember);
+  margin-bottom: 1.5rem;
+}
+.service-card.featured .card-divider { background: var(--plum); }
+.card-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+.card-features li {
+  font-size: 0.88rem; color: rgba(242,234,211,0.75);
+  display: flex; align-items: center; gap: 0.7rem; line-height: 1.4;
+}
+.service-card.featured .card-features li { color: rgba(27,11,46,0.8); }
+.card-features li::before {
+  content: '↗'; color: var(--ember); font-size: 0.75rem; flex-shrink: 0;
+}
+.service-card.featured .card-features li::before { color: var(--plum); }
+.card-price {
+  font-family: var(--display); font-weight: 800;
+  font-size: 2rem; letter-spacing: -0.04em; color: var(--bone);
+  margin-top: auto;
+}
+.service-card.featured .card-price { color: var(--plum); }
+.card-price-note {
+  font-family: var(--mono); font-size: 0.65rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  opacity: 0.5; margin-top: 0.2rem;
+}
+.services-headline { max-width: 1200px; }
+#servicios .display { font-size: clamp(2.8rem,5.5vw,5.5rem); }
+#servicios .italic-xl { font-size: clamp(3rem,6vw,6rem); }
+
+/* ════════════════════════════════════════════════════════
+   04 · INCLUYE
+════════════════════════════════════════════════════════ */
+#incluye { background: var(--paper); color: var(--plum); }
+#incluye .display { font-size: clamp(2.8rem,5vw,5rem); color: var(--plum); }
+#incluye .italic-xl { font-size: clamp(3rem,5.5vw,5.5rem); color: var(--plum); }
+.includes-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem; max-width: 1200px; margin-top: 4rem;
+}
+.includes-col-title {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ember);
+  border-top: 2px solid var(--ember); padding-top: 1rem;
+  margin-bottom: 1.8rem;
+}
+.include-item { margin-bottom: 1.8rem; }
+.include-item h4 {
+  font-family: var(--display); font-weight: 700; font-size: 1rem;
+  letter-spacing: -0.02em; color: var(--plum); margin-bottom: 0.3rem;
+}
+.include-item p { font-size: 0.85rem; color: var(--plum); opacity: 0.55; line-height: 1.55; }
+.include-dot {
+  display: inline-block; width: 8px; height: 8px;
+  background: var(--ember); margin-right: 0.6rem; flex-shrink: 0;
+  margin-top: 0.35rem;
+}
+.tech-card {
+  background: var(--plum); padding: 2rem; color: var(--bone);
+  position: relative;
+}
+.tech-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--ember);
+}
+.tech-card h3 {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ember); margin-bottom: 1.5rem;
+}
+.tech-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.tech-list li {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 0.9rem; opacity: 0.82; line-height: 1.45;
+}
+.tech-list li::before {
+  content: ''; flex-shrink: 0;
+  width: 6px; height: 6px; background: var(--ember);
+}
+.delivery-strip {
+  max-width: 1200px; margin-top: 3rem;
+  background: var(--plum); padding: 1.2rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.delivery-strip span {
+  font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--bone); opacity: 0.6;
+}
+.delivery-strip strong {
+  font-family: var(--display); font-size: 1.1rem; color: var(--bone);
+  font-weight: 800; letter-spacing: -0.02em;
+}
+
+/* ════════════════════════════════════════════════════════
+   05 · INVERSIÓN
+════════════════════════════════════════════════════════ */
+#inversion { background: var(--pitch); }
+#inversion .display { font-size: clamp(2.8rem,5.5vw,5.5rem); }
+#inversion .italic-xl { font-size: clamp(3rem,6vw,6rem); }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1200px; margin-top: 3.5rem;
+}
+.pricing-card {
+  background: rgba(27,11,46,0.6);
+  border: 1px solid rgba(242,234,211,0.1);
+  padding: 2.5rem 2.2rem;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+  cursor: none;
+}
+.pricing-card:hover { transform: translateY(-6px); }
+.pricing-card.best {
+  background: var(--ember); border-color: var(--ember);
+  color: var(--plum);
+}
+.pricing-top-bar {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--ember);
+}
+.pricing-card.best .pricing-top-bar { background: var(--plum); }
+.pricing-tag {
+  font-family: var(--mono); font-size: 0.63rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ember); opacity: 0.85; margin-bottom: 0.8rem;
+}
+.pricing-card.best .pricing-tag { color: var(--plum); opacity: 0.7; }
+.pricing-name {
+  font-family: var(--display); font-weight: 800;
+  font-size: 1.5rem; letter-spacing: -0.03em;
+  color: var(--bone); margin-bottom: 1.5rem; line-height: 1.1;
+}
+.pricing-card.best .pricing-name { color: var(--plum); }
+.pricing-divider {
+  width: 36px; height: 3px; background: var(--ember);
+  margin-bottom: 1.5rem;
+}
+.pricing-card.best .pricing-divider { background: var(--plum); }
+.pricing-amount {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  letter-spacing: -0.05em; line-height: 1;
+  color: var(--bone); margin-bottom: 0.3rem;
+}
+.pricing-card.best .pricing-amount { color: var(--plum); }
+.pricing-currency {
+  font-family: var(--mono); font-size: 0.65rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  opacity: 0.45; margin-bottom: 1.8rem;
+}
+.pricing-features {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 0.6rem; margin-bottom: 2rem; flex: 1;
+}
+.pricing-features li {
+  font-size: 0.88rem; opacity: 0.75; line-height: 1.45;
+  display: flex; align-items: flex-start; gap: 0.6rem;
+}
+.pricing-features li::before {
+  content: '↗'; color: var(--ember); font-size: 0.7rem;
+  flex-shrink: 0; margin-top: 0.15rem;
+}
+.pricing-card.best .pricing-features li::before { color: var(--plum); }
+.pricing-notes {
+  max-width: 1200px; margin-top: 2.5rem;
+  font-family: var(--mono); font-size: 0.68rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--bone); opacity: 0.3;
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+.pricing-notes span::before { content: '· '; color: var(--ember); opacity: 1; }
+
+/* ════════════════════════════════════════════════════════
+   06 · ADICIONALES
+════════════════════════════════════════════════════════ */
+#adicionales { background: var(--paper); color: var(--plum); }
+#adicionales .display { font-size: clamp(2.8rem,5vw,5rem); color: var(--plum); }
+#adicionales .italic-xl { font-size: clamp(3rem,5.5vw,5.5rem); color: var(--plum); }
+.extras-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem; max-width: 1200px; margin-top: 3.5rem;
+}
+.extra-card {
+  border-top: 1px solid var(--plum);
+  padding: 1.5rem 0;
+  position: relative;
+  transition: padding-left 0.3s;
+  cursor: none;
+}
+.extra-card::before {
+  content: ''; position: absolute; top: -1px; left: 0;
+  height: 4px; background: var(--ember);
+  width: 0; transition: width 0.4s cubic-bezier(.22,1,.36,1);
+}
+.extra-card:hover::before { width: 100%; }
+.extra-card:hover { padding-left: 0.5rem; }
+.extra-tag {
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--plum); opacity: 0.4; margin-bottom: 0.5rem;
+}
+.extra-price {
+  font-family: var(--display); font-weight: 800;
+  font-size: 1.5rem; letter-spacing: -0.04em;
+  color: var(--ember); margin-bottom: 0.5rem;
+}
+.extra-price.tbd {
+  color: var(--plum); opacity: 0.35; font-size: 1.1rem;
+}
+.extra-desc { font-size: 0.88rem; opacity: 0.55; line-height: 1.55; }
+
+/* ════════════════════════════════════════════════════════
+   07 · CONTACTO
+════════════════════════════════════════════════════════ */
+#contacto {
+  background: var(--plum); overflow: hidden;
+  position: relative;
+}
+.contact-spark {
+  position: absolute; right: -10vw; top: 50%;
+  transform: translateY(-50%);
+  width: 55vw; height: 55vw;
+  pointer-events: none; opacity: 0.6; z-index: 0;
+}
+.contact-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; max-width: 1200px; position: relative; z-index: 2;
+}
+#contacto .display { font-size: clamp(3.5rem,7vw,7rem); }
+#contacto .italic-xl { font-size: clamp(3rem,6vw,6rem); }
+.contact-tagline {
+  font-size: 1rem; opacity: 0.45; line-height: 1.7;
+  margin-top: 2rem; max-width: 380px;
+}
+.contact-cards { display: flex; flex-direction: column; gap: 1rem; padding-top: 2rem; }
+.contact-card {
+  display: flex; align-items: center; gap: 1.2rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(242,234,211,0.08);
+  padding: 1.2rem 1.5rem;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  cursor: none;
+}
+.contact-card:hover {
+  background: rgba(255,77,46,0.1);
+  border-color: rgba(255,77,46,0.3);
+  transform: translateX(6px);
+}
+.contact-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ember);
+}
+.contact-icon svg { width: 18px; height: 18px; fill: var(--plum); }
+.contact-info { font-size: 0.95rem; color: var(--bone); }
+.contact-info small {
+  display: block; font-family: var(--mono); font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.4; margin-bottom: 0.2rem;
+}
+
+/* ── FOOTER BAR ────────────────────────────────────────── */
+.footer-bar {
+  background: var(--ember); padding: 1.2rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 10;
+}
+.footer-brand {
+  font-family: var(--display); font-weight: 800;
+  font-size: 1rem; letter-spacing: -0.02em; color: var(--plum);
+}
+.footer-tagline {
+  font-family: var(--mono); font-size: 0.65rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--plum); opacity: 0.65;
+}
+
+/* ── SCROLL PROGRESS ─────────────────────────────────── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; z-index: 200;
+  height: 3px; background: var(--ember);
+  width: 0%; transition: width 0.1s linear;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .services-grid, .pricing-grid, .includes-grid, .extras-grid { grid-template-columns: 1fr; }
+  .contexto-grid, .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 7rem 1.5rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">
+    ALTUM<span class="star">*</span>&nbsp;DESIGN
+  </div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#incluye">Incluye</a></li>
+    <li><a href="#inversion">Inversión</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Empecemos →</a>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     01 · HERO
+════════════════════════════════════════════════════════ -->
+<section id="hero" class="grain">
+  <div class="ember-bar"></div>
+
+  <!-- Big ember spark -->
+  <svg class="hero-bg-spark" viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg">
+    <g class="spark-spin">
+      <polygon points="0,-92 11,0 0,16.5 -11,0" fill="#FF4D2E"/>
+      <polygon points="0,-56 7,0 0,10 -7,0" fill="#FF4D2E" transform="rotate(38)"/>
+      <polygon points="0,-70 8,0 0,12.5 -8,0" fill="#FF4D2E" transform="rotate(78)"/>
+      <polygon points="0,-48 6,0 0,8.6 -6,0" fill="#FF4D2E" transform="rotate(125)"/>
+      <polygon points="0,-80 10,0 0,14.4 -10,0" fill="#FF4D2E" transform="rotate(180)"/>
+      <polygon points="0,-52 6,0 0,9.3 -6,0" fill="#FF4D2E" transform="rotate(218)"/>
+      <polygon points="0,-66 8,0 0,11.8 -8,0" fill="#FF4D2E" transform="rotate(262)"/>
+      <polygon points="0,-44 6,0 0,7.9 -6,0" fill="#FF4D2E" transform="rotate(310)"/>
+      <circle r="6" fill="#FF4D2E"/>
+    </g>
+  </svg>
+
+  <!-- Small bone spark bottom-left -->
+  <svg class="hero-bg-spark2" viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg">
+    <g class="spark-spin2">
+      <polygon points="0,-92 11,0 0,16.5 -11,0" fill="#F2EAD3"/>
+      <polygon points="0,-56 7,0 0,10 -7,0" fill="#F2EAD3" transform="rotate(38)"/>
+      <polygon points="0,-70 8,0 0,12.5 -8,0" fill="#F2EAD3" transform="rotate(78)"/>
+      <polygon points="0,-48 6,0 0,8.6 -6,0" fill="#F2EAD3" transform="rotate(125)"/>
+      <polygon points="0,-80 10,0 0,14.4 -10,0" fill="#F2EAD3" transform="rotate(180)"/>
+      <polygon points="0,-52 6,0 0,9.3 -6,0" fill="#F2EAD3" transform="rotate(218)"/>
+      <polygon points="0,-66 8,0 0,11.8 -8,0" fill="#F2EAD3" transform="rotate(262)"/>
+      <polygon points="0,-44 6,0 0,7.9 -6,0" fill="#F2EAD3" transform="rotate(310)"/>
+      <circle r="6" fill="#F2EAD3"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-tag reveal d1">Propuesta de Presencia Digital · Mayo 2026</p>
+    <h1 class="display hero-title reveal d2">Propuesta de<br>Presencia</h1>
+    <h1 class="italic-xl hero-italic reveal d3">Digital<span class="ember">.</span></h1>
+    <div class="hero-sub reveal d4">
+      <p>Construimos la identidad visual y la presencia online que tu marca necesita para ser imposible de ignorar.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#servicios" class="btn-primary">Ver propuesta</a>
+        <a href="#contacto" class="btn-outline">Hablar con nosotros</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     02 · CONTEXTO
+════════════════════════════════════════════════════════ -->
+<section id="contexto">
+  <p class="section-label reveal d1">— 01 · El contexto</p>
+  <h2 class="display reveal d2">Tu marca existe.</h2>
+  <h2 class="italic-xl reveal d3">¿La encuentra tu cliente<span class="ember">?</span></h2>
+
+  <div class="contexto-grid">
+    <div class="contexto-card reveal d4">
+      <div class="stat">93%</div>
+      <p>de las decisiones de compra comienzan con una búsqueda en línea. No tener presencia digital no es discreción — es invisibilidad.</p>
+      <p style="margin-top:1.2rem; font-style:italic; opacity:0.65; font-family:'Instrument Serif',serif; font-size:1.05rem;">Tu sitio web y tu identidad visual son la primera impresión que das. Y no hay segunda oportunidad.</p>
+    </div>
+    <ul class="check-list reveal d5">
+      <li>Genera credibilidad y confianza inmediata ante tus clientes</li>
+      <li>Atrae clientes potenciales las 24 horas, los 7 días</li>
+      <li>Te diferencia de la competencia con identidad propia</li>
+      <li>Posiciona tu marca en Google de forma orgánica</li>
+      <li>Convierte visitas en clientes reales y cotizaciones</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     03 · SERVICIOS
+════════════════════════════════════════════════════════ -->
+<section id="servicios" class="grain">
+  <div class="services-headline">
+    <p class="section-label reveal d1">— 02 · Lo que hacemos</p>
+    <h2 class="display reveal d2">Tres maneras de</h2>
+    <h2 class="italic-xl reveal d3">llevarte al siguiente nivel<span class="ember">.</span></h2>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- BRANDING -->
+    <div class="service-card reveal d2">
+      <div class="card-tag">Branding</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF4D2E" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <h3 class="card-name">Identidad<br>de Marca</h3>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li>Logotipo primario + variantes (SVG, PNG, PDF)</li>
+        <li>Paleta cromática con valores hex, RGB y CMYK</li>
+        <li>Sistema tipográfico · pares de fuentes</li>
+        <li>Guía de marca completa — do's &amp; don'ts</li>
+        <li>Tarjeta de presentación digital e imprimible</li>
+      </ul>
+      <div>
+        <div class="card-price">$5,000 <span style="font-size:0.9rem;opacity:0.5;font-weight:400;">MXN</span></div>
+        <div class="card-price-note">+ IVA</div>
+      </div>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <div class="service-card reveal d3">
+      <div class="card-tag">Landing Page</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF4D2E" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h10M7 12h6"/></svg>
+      </div>
+      <h3 class="card-name">Página Web<br>Profesional</h3>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li>Dominio .com personalizado registrado</li>
+        <li>Certificado SSL/TLS 1.3 · HTTPS seguro</li>
+        <li>Diseño responsive — mobile-first</li>
+        <li>SEO técnico: schema, Core Web Vitals, meta tags</li>
+        <li>Google Analytics + WhatsApp CTA integrados</li>
+      </ul>
+      <div>
+        <div class="card-price">$8,000 <span style="font-size:0.9rem;opacity:0.5;font-weight:400;">MXN</span></div>
+        <div class="card-price-note">+ IVA</div>
+      </div>
+    </div>
+
+    <!-- PAQUETE COMPLETO -->
+    <div class="service-card featured reveal d4">
+      <div class="pricing-top-bar"></div>
+      <div class="card-tag">⭐ Paquete completo</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1B0B2E" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3 class="card-name">Branding<br>+ Landing</h3>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li>Todo lo del plan Branding</li>
+        <li>Todo lo del plan Landing Page</li>
+        <li>Dominio + SSL incluidos</li>
+        <li>Coherencia visual total marca–web</li>
+        <li>Una sola inversión — mejor precio</li>
+      </ul>
+      <div>
+        <div class="card-price">$10,000 <span style="font-size:0.9rem;opacity:0.5;font-weight:400;">MXN</span></div>
+        <div class="card-price-note">+ IVA · todo incluido</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     04 · QUÉ INCLUYE
+════════════════════════════════════════════════════════ -->
+<section id="incluye">
+  <p class="section-label reveal d1">— 03 · El detalle</p>
+  <h2 class="display reveal d2">Todo lo que</h2>
+  <h2 class="italic-xl reveal d3">necesita tu marca<span class="ember">.</span></h2>
+
+  <div class="includes-grid">
+
+    <!-- Branding col -->
+    <div class="reveal d2">
+      <div class="includes-col-title">Branding</div>
+      <div class="include-item">
+        <h4>Logotipo primario + símbolo</h4>
+        <p>Wordmark + marca gráfica en todos los formatos editables: SVG, AI, PNG y PDF de alta resolución.</p>
+      </div>
+      <div class="include-item">
+        <h4>Paleta cromática completa</h4>
+        <p>Colores principales y secundarios con valores hex, RGB, CMYK y Pantone para impresión.</p>
+      </div>
+      <div class="include-item">
+        <h4>Sistema tipográfico</h4>
+        <p>Fuentes para display, cuerpo y utilidades — con jerarquía y pares validados.</p>
+      </div>
+      <div class="include-item">
+        <h4>Variantes del logo</h4>
+        <p>Versión dark, light, monocromo, horizontal y vertical para todos los contextos.</p>
+      </div>
+      <div class="include-item">
+        <h4>Brand manual</h4>
+        <p>Guía de uso, espaciados mínimos, usos incorrectos y aplicaciones digitales e impresas.</p>
+      </div>
+    </div>
+
+    <!-- Landing col -->
+    <div class="reveal d3">
+      <div class="includes-col-title">Landing Page</div>
+      <div class="include-item">
+        <h4>Dominio .com propio</h4>
+        <p>Registro y configuración completa de tu dirección en internet, primer año incluido.</p>
+      </div>
+      <div class="include-item">
+        <h4>Certificado SSL / HTTPS</h4>
+        <p>Seguridad TLS 1.3 · candado verde · cifrado de extremo a extremo. Confianza desde el primer clic.</p>
+      </div>
+      <div class="include-item">
+        <h4>Diseño responsive mobile-first</h4>
+        <p>Optimizado para celular, tableta y escritorio — apariencia perfecta en cualquier pantalla.</p>
+      </div>
+      <div class="include-item">
+        <h4>SEO técnico y on-page</h4>
+        <p>Meta tags, schema markup, sitemap XML, Core Web Vitals y velocidad de carga optimizada.</p>
+      </div>
+      <div class="include-item">
+        <h4>Integraciones esenciales</h4>
+        <p>Google Analytics 4, botón de WhatsApp, formulario de contacto y redes sociales.</p>
+      </div>
+    </div>
+
+    <!-- Tech stack col -->
+    <div class="reveal d4">
+      <div class="includes-col-title">Tech Stack</div>
+      <div class="tech-card">
+        <h3>Infraestructura incluida</h3>
+        <ul class="tech-list">
+          <li>Hosting SSD de alta velocidad</li>
+          <li>CDN global para carga ultrarrápida</li>
+          <li>SSL/TLS 1.3 certificado y renovación automática</li>
+          <li>Panel de administración propio e intuitivo</li>
+          <li>Google Analytics 4 integrado</li>
+          <li>Formulario y WhatsApp CTA</li>
+          <li>Optimización de imágenes en formato WebP</li>
+          <li>Backups automáticos diarios</li>
+          <li>Protección contra malware y DDoS</li>
+          <li>Soporte técnico post-entrega</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="delivery-strip reveal d5">
+    <div>
+      <span>Tiempo de entrega estimado</span><br>
+      <strong>5 – 7 días hábiles</strong>
+    </div>
+    <div style="width:1px;height:40px;background:rgba(242,234,211,0.15);"></div>
+    <div>
+      <span>Renovación anual de dominio y hosting</span><br>
+      <strong>A cargo del cliente</strong>
+    </div>
+    <div style="width:1px;height:40px;background:rgba(242,234,211,0.15);"></div>
+    <div>
+      <span>Esquema de pago</span><br>
+      <strong>50% anticipo · 50% entrega</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     05 · INVERSIÓN
+════════════════════════════════════════════════════════ -->
+<section id="inversion" class="grain">
+  <p class="section-label reveal d1">— 04 · Inversión</p>
+  <h2 class="display reveal d2">Elige tu plan</h2>
+  <h2 class="italic-xl reveal d3">de crecimiento<span class="ember">.</span></h2>
+
+  <div class="pricing-grid">
+
+    <div class="pricing-card reveal d2">
+      <div class="pricing-top-bar"></div>
+      <div class="pricing-tag">Branding</div>
+      <div class="pricing-name">Identidad Visual</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-amount">$5,000</div>
+      <div class="pricing-currency">MXN + IVA</div>
+      <ul class="pricing-features">
+        <li>Logotipo · paleta · tipografías</li>
+        <li>Variantes de logo</li>
+        <li>Brand manual completo</li>
+        <li>Tarjeta de presentación</li>
+      </ul>
+    </div>
+
+    <div class="pricing-card reveal d3">
+      <div class="pricing-top-bar"></div>
+      <div class="pricing-tag">Landing Page</div>
+      <div class="pricing-name">Presencia Online</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-amount">$8,000</div>
+      <div class="pricing-currency">MXN + IVA</div>
+      <ul class="pricing-features">
+        <li>Dominio .com + SSL/TLS</li>
+        <li>Diseño responsive</li>
+        <li>SEO técnico y on-page</li>
+        <li>Analytics + WhatsApp</li>
+      </ul>
+    </div>
+
+    <div class="pricing-card best reveal d4">
+      <div class="pricing-top-bar"></div>
+      <div class="pricing-tag">⭐ Mejor inversión</div>
+      <div class="pricing-name">Branding + Landing</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-amount">$10,000</div>
+      <div class="pricing-currency">MXN + IVA · todo incluido</div>
+      <ul class="pricing-features">
+        <li>Todo del plan Branding</li>
+        <li>Todo del plan Landing</li>
+        <li>Coherencia visual total</li>
+        <li>Ahorras $1,000 MXN</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="pricing-notes reveal d5">
+    <span>50% anticipo · 50% contra entrega</span>
+    <span>Renovación anual de dominio a cargo del cliente</span>
+    <span>Precios en MXN + IVA</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     06 · SERVICIOS ADICIONALES
+════════════════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════════════════
+     07 · CONTACTO
+════════════════════════════════════════════════════════ -->
+<section id="contacto" class="grain">
+  <!-- Big spark decoration -->
+  <svg class="contact-spark" viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg">
+    <g class="spark-spin">
+      <polygon points="0,-92 11,0 0,16.5 -11,0" fill="#FF4D2E"/>
+      <polygon points="0,-56 7,0 0,10 -7,0" fill="#FF4D2E" transform="rotate(38)"/>
+      <polygon points="0,-70 8,0 0,12.5 -8,0" fill="#FF4D2E" transform="rotate(78)"/>
+      <polygon points="0,-48 6,0 0,8.6 -6,0" fill="#FF4D2E" transform="rotate(125)"/>
+      <polygon points="0,-80 10,0 0,14.4 -10,0" fill="#FF4D2E" transform="rotate(180)"/>
+      <polygon points="0,-52 6,0 0,9.3 -6,0" fill="#FF4D2E" transform="rotate(218)"/>
+      <polygon points="0,-66 8,0 0,11.8 -8,0" fill="#FF4D2E" transform="rotate(262)"/>
+      <polygon points="0,-44 6,0 0,7.9 -6,0" fill="#FF4D2E" transform="rotate(310)"/>
+      <circle r="6" fill="#FF4D2E"/>
+    </g>
+  </svg>
+
+  <div class="contact-layout">
+    <div>
+      <p class="section-label reveal d1">— 05 · Hablemos</p>
+      <h2 class="display reveal d2">Hagamos tu<br>marca</h2>
+      <h2 class="italic-xl reveal d3">imposible de ignorar<span class="ember">.</span></h2>
+      <p class="contact-tagline reveal d4">Altum Design — Diseño que no pasa desapercibido. Estamos listos para llevar tu presencia digital al siguiente nivel.</p>
+    </div>
+
+    <div class="contact-cards reveal d3">
+      <a href="https://wa.me/528181113041" target="_blank" class="contact-card" style="text-decoration:none;">
+        <div class="contact-icon" style="background:#25D366;">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.849L.057 23.617a.75.75 0 00.921.921l5.768-1.467A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.686-.504-5.222-1.383l-.374-.22-3.878.987.988-3.878-.22-.374A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        </div>
+        <div class="contact-info">
+          <small>Abigail Garza · WhatsApp</small>
+          81 8111 3041
+        </div>
+      </a>
+      <a href="https://wa.me/528116208553" target="_blank" class="contact-card" style="text-decoration:none;">
+        <div class="contact-icon" style="background:#25D366;">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.849L.057 23.617a.75.75 0 00.921.921l5.768-1.467A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.686-.504-5.222-1.383l-.374-.22-3.878.987.988-3.878-.22-.374A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        </div>
+        <div class="contact-info">
+          <small>Orlando Montalvo · WhatsApp</small>
+          81 1620 8553
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer-bar">
+  <div class="footer-brand">ALTUM* DESIGN</div>
+  <div class="footer-tagline">Make brands impossible to ignore.</div>
+  <div class="footer-tagline">© 2026</div>
+</div>
+
+<script>
+// ── CURSOR ──────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+(function animRing() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) *.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a, button, .service-card, .pricing-card, .extra-card, .contact-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+    ring.style.opacity = '0';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.opacity = '0.6';
+  });
+});
+
+// ── SCROLL PROGRESS ─────────────────────────────────────────────
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+// ── REVEAL ON SCROLL ────────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
